@@ -79,6 +79,9 @@
 %  %headline
   \setbeamertemplate{headline}{%
     \ifx\beamer@showheadline\undefined
+      \begin{beamercolorbox}[wd=1.0\paperwidth,ht=2.25ex,dp=1ex,left]{frametitle}%
+          \usebeamerfont{section in head/foot}\hspace*{3.5ex}%
+      \end{beamercolorbox}%
     \else
       \begin{beamercolorbox}[wd=1.0\paperwidth,ht=2.25ex,dp=1ex,left]{headfoot}%
           \usebeamerfont{section in head/foot}\hspace*{3.5ex}%
@@ -115,22 +118,18 @@
 \newcommand{\aauheaderbackground}[0]{%
   \tikzexternaldisable
   \begin{tikzpicture}[overlay]
-    \coordinate (UL) at (0,0); %upper left corner of the slide
-    \coordinate (HLR) at (\paperwidth,-\beamer@height); %lower right of the header
     \ifx\beamer@showheadline\undefined
-      \coordinate (logopos) at ([shift={(-\beamer@logoouterradius-\beamer@borderwidth,\beamer@height-\beamer@logoouterradius-0.5\beamer@borderwidth)}] HLR);%coordinate of the logo
+      \coordinate (UL) at (0,0.1); %upper left corner of the slide
     \else
-      \coordinate (logopos) at ([shift={(-\beamer@logoouterradius-\beamer@borderwidth,0.5\beamer@height)}] HLR);%coordinate of the logo
+      \coordinate (UL) at (0,0); %upper left corner of the slide
     \fi
+    \coordinate (HLR) at (\paperwidth,-\beamer@height); %lower right of the header
+    \coordinate (logopos) at ([shift={(-\beamer@logoouterradius-\beamer@borderwidth,0.5\beamer@height)}] HLR);%coordinate of the logo
     %draw the background of the header, the circle and the logo
     {\usebeamercolor{AAUsimple}%
       \usebeamercolor{normal text}%
       % draw the blue background rectangle of the header
-      \ifx\beamer@showheadline\undefined
-        \draw[draw=none,fill=AAUsimple.bg] (UL) rectangle ([shift={(0,-3.25ex)}] HLR);
-      \else
-        \draw[draw=none,fill=AAUsimple.bg] (UL) rectangle (HLR);
-      \fi
+      \draw[draw=none,fill=AAUsimple.bg] (UL) rectangle (HLR);
       % draw the outer circle
       \fill[fill=AAUsimple.fg] (logopos) circle (\beamer@logoouterradius);
       % draw the inner circle
