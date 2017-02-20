@@ -36,6 +36,7 @@
 \DeclareOptionBeamer{progressstyle}{\def\beamer@progressstyle{#1}}
 \DeclareOptionBeamer{rotationcw}{\def\beamer@rotationcw{true}}
 \DeclareOptionBeamer{shownavsym}{\def\beamer@shownavsym{true}}
+\DeclareOptionBeamer{showheadline}{\def\beamer@showheadline{true}}
 \ProcessOptionsBeamer
 
 %the height of the header is 2.5 times the lineheight of the frame title
@@ -77,11 +78,17 @@
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  %headline
   \setbeamertemplate{headline}{%
-    \begin{beamercolorbox}[wd=1.0\paperwidth,ht=2.25ex,dp=1ex,left]{headfoot}%
-        \usebeamerfont{section in head/foot}\hspace*{3.5ex}%
-        \insertshortauthor\ |\ %
-                \insertshorttitle%
-    \end{beamercolorbox}%
+    \ifx\beamer@showheadline\undefined
+      \begin{beamercolorbox}[wd=1.0\paperwidth,ht=2.25ex,dp=1ex,left]{frametitle}%
+          \usebeamerfont{section in head/foot}\hspace*{3.5ex}%
+      \end{beamercolorbox}%
+    \else
+      \begin{beamercolorbox}[wd=1.0\paperwidth,ht=2.25ex,dp=1ex,left]{headfoot}%
+          \usebeamerfont{section in head/foot}\hspace*{3.5ex}%
+          \insertshortauthor\ |\ %
+                  \insertshorttitle%
+      \end{beamercolorbox}%
+    \fi
     \aauheaderbackground%
   }
   
@@ -111,7 +118,11 @@
 \newcommand{\aauheaderbackground}[0]{%
   \tikzexternaldisable
   \begin{tikzpicture}[overlay]
-    \coordinate (UL) at (0,0); %upper left corner of the slide
+    \ifx\beamer@showheadline\undefined
+      \coordinate (UL) at (0,0.1); %upper left corner of the slide
+    \else
+      \coordinate (UL) at (0,0); %upper left corner of the slide
+    \fi
     \coordinate (HLR) at (\paperwidth,-\beamer@height); %lower right of the header
     \coordinate (logopos) at ([shift={(-\beamer@logoouterradius-\beamer@borderwidth,0.5\beamer@height)}] HLR);%coordinate of the logo
     %draw the background of the header, the circle and the logo
